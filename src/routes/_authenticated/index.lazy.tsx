@@ -1,15 +1,21 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { CatalogSidebar } from '@/features/products/components/catalog-sidebar'
 
 export const Route = createLazyFileRoute('/_authenticated/')({
-  component: Index,
+  component: HomePage,
 })
 
-function Index() {
+function HomePage() {
   return (
-    <div className="flex min-h-[80vh] items-center justify-center bg-white">
-      <h1 className="text-xl font-medium text-slate-600">
-        Это главная страница, созданная с помощью TanStack Router.
-      </h1>
+    <div className="bg-white">
+      <div className="max-w-[1440px] mx-auto flex min-h-screen px-6 py-10">
+        <CatalogSidebar/>
+        <div className="flex-1 pl-4">
+          <div className="text-slate-300 h-full flex items-center justify-center">
+            Content area (Products & Filters will be here)
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

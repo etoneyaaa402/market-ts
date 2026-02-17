@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { authApi } from '@/api/auth'
 import { createFileRoute } from '@tanstack/react-router'
-import { z } from 'zod'
 
 type LoginSearch = {
     redirect?: string
