@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthenticatedProductProductIdRouteImport } from './routes/_authenticated/product.$productId'
 
 const AuthenticatedIndexLazyRouteImport = createFileRoute('/_authenticated/')()
 
@@ -32,27 +33,41 @@ const AuthenticatedIndexLazyRoute = AuthenticatedIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_authenticated/index.lazy').then((d) => d.Route),
 )
+const AuthenticatedProductProductIdRoute =
+  AuthenticatedProductProductIdRouteImport.update({
+    id: '/product/$productId',
+    path: '/product/$productId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexLazyRoute
   '/login': typeof LoginRoute
+  '/product/$productId': typeof AuthenticatedProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexLazyRoute
+  '/product/$productId': typeof AuthenticatedProductProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/': typeof AuthenticatedIndexLazyRoute
+  '/_authenticated/product/$productId': typeof AuthenticatedProductProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths: '/' | '/login' | '/product/$productId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/'
-  id: '__root__' | '/_authenticated' | '/login' | '/_authenticated/'
+  to: '/login' | '/' | '/product/$productId'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/login'
+    | '/_authenticated/'
+    | '/_authenticated/product/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -83,15 +98,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexLazyRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/product/$productId': {
+      id: '/_authenticated/product/$productId'
+      path: '/product/$productId'
+      fullPath: '/product/$productId'
+      preLoaderRoute: typeof AuthenticatedProductProductIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
+  AuthenticatedProductProductIdRoute: typeof AuthenticatedProductProductIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
+  AuthenticatedProductProductIdRoute: AuthenticatedProductProductIdRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

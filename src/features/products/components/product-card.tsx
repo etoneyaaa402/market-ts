@@ -3,6 +3,7 @@ import { Heart, ShoppingBag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types/product";
+import { Link } from "@tanstack/react-router";
 
 interface ProductCardProps {
     product: Product;
@@ -18,7 +19,12 @@ export function ProductCard( { product, isNew, isReserved }: ProductCardProps) {
     }).format(product.price);
 
     return (
-        <div className="group flex flex-col bg-white rounded-[32px] p-2 transition-all">
+        <Link
+            to="/product/$productId"
+            params={{ productId: product.id.toString() }}
+            className="group flex-col ..."
+        >
+            <div className="group flex flex-col bg-white rounded-[32px] p-2 transition-all">
             <div className="relative aspect-square rounded-[28px] bg-[#f7f7f7] overflow-hidden flex items-center justify-center p-6">
                 <img 
                     src={product.thumbnail} 
@@ -82,5 +88,6 @@ export function ProductCard( { product, isNew, isReserved }: ProductCardProps) {
                 </div>
             </div>
         </div>
+        </Link>
     )
 }
