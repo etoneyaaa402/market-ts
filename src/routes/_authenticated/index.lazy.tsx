@@ -11,10 +11,11 @@ export const Route = createLazyFileRoute('/_authenticated/')({
 })
 
 function HomePage() {
+  const { category } = Route.useSearch()
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['products'],
-    queryFn: productsApi.getAll,
-  });
+    queryKey: ['products', category],
+    queryFn: () => productsApi.getAll(category),
+  })
   return (
     <div className="bg-white">
       <div className="max-w-[1440px] mx-auto px-6">
@@ -23,9 +24,9 @@ function HomePage() {
           <CatalogSidebar/>
           <div className="flex-1">
             <CatalogFilters/>
-            <h1 className="text-3xl font-bold text-slate-800 mb-8 lowercase">
-              selected category
-            </h1>
+            {/* <h1 className="text-3xl font-bold text-slate-800 mb-8 lowercase">
+              {category ? category.replace('-', ' ') : 'all products'}
+            </h1> */}
             {isLoading && (
               <div className="grid grid-cols-3 gap-8">
                 {[...Array(6)].map((_, i) => (

@@ -8,14 +8,11 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedProductProductIdRouteImport } from './routes/_authenticated/product.$productId'
-
-const AuthenticatedIndexLazyRouteImport = createFileRoute('/_authenticated/')()
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -26,7 +23,7 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedIndexLazyRoute = AuthenticatedIndexLazyRouteImport.update({
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
@@ -41,20 +38,20 @@ const AuthenticatedProductProductIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthenticatedIndexLazyRoute
+  '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
   '/product/$productId': typeof AuthenticatedProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/': typeof AuthenticatedIndexLazyRoute
+  '/': typeof AuthenticatedIndexRoute
   '/product/$productId': typeof AuthenticatedProductProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/': typeof AuthenticatedIndexLazyRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/product/$productId': typeof AuthenticatedProductProductIdRoute
 }
 export interface FileRouteTypes {
@@ -95,7 +92,7 @@ declare module '@tanstack/react-router' {
       id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexLazyRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/product/$productId': {
@@ -109,12 +106,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedProductProductIdRoute: typeof AuthenticatedProductProductIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedProductProductIdRoute: AuthenticatedProductProductIdRoute,
 }
 
