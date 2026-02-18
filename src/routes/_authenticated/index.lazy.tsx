@@ -11,11 +11,30 @@ export const Route = createLazyFileRoute('/_authenticated/')({
 })
 
 function HomePage() {
-  const { category } = Route.useSearch()
+  const search = Route.useSearch()
+  // const { category } = Route.useSearch()
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['products', category],
-    queryFn: () => productsApi.getAll(category),
+    queryKey: ['products', search.category],
+    queryFn: () => productsApi.getAll(search.category),
   })
+  const filteredProducts = data?.products.filter(product => {
+    let keep = true
+    if (search.brand && product.brand !== search.brand) keep = false
+    if (search.rating) {
+      const selectedRating = Number(search.rating)
+      const roundedProductRating = Math.round(product.rating)
+      if (roundedProductRating !== selectedRating) {
+        keep = false
+      }
+    }
+    return keep
+  }) || []
+
+  if (search.sortBy === 'asc') {
+    filteredProducts.sort((a, b) => a.price - b.price)
+  } else if (search.sortBy === 'desc') {
+    filteredProducts.sort((a, b) => b.price - a.price)
+  }
   return (
     <div className="bg-white">
       <div className="max-w-[1440px] mx-auto px-6">
@@ -29,8 +48,8 @@ function HomePage() {
             </h1> */}
             {isLoading && (
               <div className="grid grid-cols-3 gap-8">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="aspect-[4/5] bg-slate-100 animate-pulse rounded-[32px]" />
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             )}
@@ -38,12 +57,11 @@ function HomePage() {
             {isError && <p className="text-red-500">Error loading products.</p>}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
-              {data?.products.map((product, index) => (
+              {filteredProducts.map((product) => (
                 <ProductCard 
                   key={product.id} 
-                  product={product} 
-                  isNew={index % 3 === 0} 
-                  isReserved={index === 2 || index === 5}
+                  product={product}
+                  isNew={product.rating > 4.5} 
                 />
               ))}
             </div>
