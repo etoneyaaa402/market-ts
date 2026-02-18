@@ -18,6 +18,17 @@ export function ProductCard( { product, isNew, isReserved }: ProductCardProps) {
         minimumFractionDigits: 2,
     }).format(product.price);
 
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+        e.preventDefault(); 
+        e.stopPropagation();
+        setIsFavorite(!isFavorite);
+    };
+    const handleCartClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsAdded(!isAdded);
+    };
+
     return (
         <Link
             to="/product/$productId"
@@ -33,7 +44,7 @@ export function ProductCard( { product, isNew, isReserved }: ProductCardProps) {
                 />
 
                 <button 
-                    onClick={() => setIsFavorite(!isFavorite)}
+                    onClick={handleFavoriteClick}
                     className="absolute top-4 right-4 p-1 transition-transform active:scale-125"
                 >
                     <Heart 
@@ -74,7 +85,7 @@ export function ProductCard( { product, isNew, isReserved }: ProductCardProps) {
                     </span>
 
                     <button 
-                        onClick={() => setIsAdded(!isAdded)}
+                        onClick={handleCartClick}
                         className="transition-all active:scale-95"
                     >
                         {isAdded ? (
