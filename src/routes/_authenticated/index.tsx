@@ -6,7 +6,8 @@ export type ProductSearch = {
   rating?: string
   weight?: string
   condition?: string
-  sortBy?: 'asc' | 'desc'
+  sortBy?: 'asc' | 'desc',
+  q?: string
 }
 
 export const Route = createFileRoute('/_authenticated/')({
@@ -18,6 +19,7 @@ export const Route = createFileRoute('/_authenticated/')({
       weight: search.weight as string || undefined,
       condition: search.condition as string || undefined,
       sortBy: (search.sortBy as 'asc' | 'desc') || undefined,
+      q: search.q as string || undefined,
     }
   },
 })

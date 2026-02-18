@@ -83,7 +83,7 @@ export function CatalogFilters() {
                   variant="secondary" 
                   className="bg-slate-100 hover:bg-slate-200 text-slate-500 font-normal px-4 py-1.5 rounded-full border-none flex items-center gap-2 text-[14px]"
                 >
-                  {value}
+                  {key === 'q' ? `Search: ${value}` : value}
                   <X 
                     className="h-3 w-3 cursor-pointer" 
                     onClick={() => removeFilter(key as keyof ProductSearch)} 

@@ -19,6 +19,13 @@ function HomePage() {
   })
   const filteredProducts = data?.products.filter(product => {
     let keep = true
+    if (search.q) {
+      const query = search.q.toLowerCase()
+      const inTitle = product.title.toLowerCase().includes(query)
+      const inDesc = product.description.toLowerCase().includes(query)
+      
+      if (!inTitle && !inDesc) keep = false
+    }
     if (search.brand && product.brand !== search.brand) keep = false
     if (search.rating) {
       const selectedRating = Number(search.rating)
@@ -57,6 +64,11 @@ function HomePage() {
             {isError && <p className="text-red-500">Error loading products.</p>}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+              {filteredProducts.length === 0 && !isLoading && (
+                  <div className="text-center py-20 text-slate-400">
+                      No products found for "{search.q}"
+                  </div>
+              )}
               {filteredProducts.map((product) => (
                 <ProductCard 
                   key={product.id} 

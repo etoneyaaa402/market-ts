@@ -1,4 +1,6 @@
-import { useNavigate, Link } from '@tanstack/react-router'
+import { useState, useEffect } from 'react'
+import { Route } from '@/routes/_authenticated/index'
+import { useNavigate, Link, useSearch } from '@tanstack/react-router'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +16,8 @@ import { Heart, ShoppingBag, User as UserIcon, Search } from 'lucide-react'
 
 export function Header() {
   const navigate = useNavigate()
-  
+  const { q } = useSearch({ from: '/_authenticated/' })
+  const [searchValue, setSearchValue] = useState(q || '')
   const userJson = localStorage.getItem('user')
   const user = userJson ? JSON.parse(userJson) : null
 
@@ -23,51 +26,61 @@ export function Header() {
     localStorage.removeItem('user')
     navigate({ to: '/login' })
   }
+  useEffect(() => {
+    setSearchValue(q || '')
+  }, [q])
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    navigate({
+      to: '/',
+      search: (prev) => ({ ...prev, q: searchValue || undefined }),
+    })
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#e67e7e] text-white py-4 shadow-md">
       <div className="container mx-auto flex items-center justify-between px-4 gap-8">
         
-        {/* Логотип */}
         <Link to="/" className="flex flex-col leading-tight shrink-0">
           <span className="text-sm font-bold tracking-tighter uppercase">2nd</span>
           <span className="text-sm font-bold tracking-tighter uppercase leading-[0.5]">Hand</span>
           <span className="text-sm font-bold tracking-tighter uppercase">Market</span>
         </Link>
 
-        {/* Поиск */}
-        <div className="relative flex-1 max-w-md group">
+        <form 
+          onSubmit={handleSearch} 
+          className="relative flex-1 max-w-md group"
+        >
           <Input
             type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Search products..."
             className="w-full h-10 rounded-full border-none bg-red-400/40 placeholder:text-red-100 text-white pl-6 pr-10 focus-visible:ring-1 focus-visible:ring-white/50"
           />
-          <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-red-100 group-hover:text-white transition-colors cursor-pointer" />
-        </div>
+          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2">
+            <Search className="h-5 w-5 text-red-100 group-hover:text-white transition-colors" />
+          </button>
+        </form>
 
-        {/* Навигационные ссылки */}
         <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium">
           <Link to="/" className="hover:underline underline-offset-4 decoration-2">About us</Link>
           <Link to="/" className="hover:underline underline-offset-4 decoration-2">All shops</Link>
           <Link to="/" className="hover:underline underline-offset-4 decoration-2">Become a merchant</Link>
         </nav>
 
-        {/* Иконки и Профиль */}
         <div className="flex items-center space-x-2 shrink-0">
           
-          {/* Избранное */}
           <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
             <Heart className="h-6 w-6" />
             <span className="ml-1 text-sm font-bold">0</span>
           </Button>
 
-          {/* Корзина */}
           <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
             <ShoppingBag className="h-6 w-6" />
             <span className="ml-1 text-sm font-bold">0</span>
           </Button>
 
-          {/* Выпадающее меню профиля */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10">
