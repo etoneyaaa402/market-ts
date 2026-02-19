@@ -45,9 +45,15 @@ function HomePage() {
   return (
     <div className="bg-white">
       <div className="max-w-[1440px] mx-auto px-6">
-        <CatalogTips/>
-        <div className="flex gap-10">
-          <CatalogSidebar/>
+        {/* <CatalogTips/> */}
+        <div className="overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
+          <CatalogTips />
+        </div>
+        <div className="flex flex-col lg:flex-row gap-10">
+          {/* <CatalogSidebar/> */}
+          <div className="hidden lg:block">
+            <CatalogSidebar />
+          </div>
           <div className="flex-1">
             <CatalogFilters/>
             {/* <h1 className="text-3xl font-bold text-slate-800 mb-8 lowercase">
@@ -63,7 +69,7 @@ function HomePage() {
 
             {isError && <p className="text-red-500">Error loading products.</p>}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 lg:gap-x-8 lg:gap-y-10">
               {filteredProducts.length === 0 && !isLoading && (
                   <div className="text-center py-20 text-slate-400">
                       No products found for "{search.q}"
