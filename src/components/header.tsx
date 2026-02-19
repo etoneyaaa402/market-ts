@@ -16,7 +16,10 @@ import { Heart, ShoppingBag, User as UserIcon, Search } from 'lucide-react'
 
 export function Header() {
   const navigate = useNavigate()
-  const { q } = useSearch({ from: '/_authenticated/' })
+  const search = useSearch({ 
+    strict: false 
+  })
+  const q = (search as any)?.q as string | undefined
   const [searchValue, setSearchValue] = useState(q || '')
   const userJson = localStorage.getItem('user')
   const user = userJson ? JSON.parse(userJson) : null
@@ -33,7 +36,10 @@ export function Header() {
     e.preventDefault()
     navigate({
       to: '/',
-      search: (prev) => ({ ...prev, q: searchValue || undefined }),
+      search: (prev: any) => ({
+        ...prev,
+        q: searchValue || undefined,
+      }),
     })
   }
 
