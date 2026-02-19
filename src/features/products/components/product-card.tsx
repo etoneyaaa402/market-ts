@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types/product";
 import { Link } from "@tanstack/react-router";
+import { useCartStore } from "@/features/cart/store/use-cart-store";
 
 interface ProductCardProps {
     product: Product;
@@ -12,21 +13,24 @@ interface ProductCardProps {
 }
 
 export function ProductCard( { product, isNew, isReserved }: ProductCardProps) {
-    const [isFavorite, setIsFavorite] = useState(false);
-    const [isAdded, setIsAdded] = useState(false);
+    // const [isFavorite, setIsFavorite] = useState(false);
+    // const [isAdded, setIsAdded] = useState(false);
     const formattedPrice = new Intl.NumberFormat( 'de-DE', {
         minimumFractionDigits: 2,
     }).format(product.price);
+    const { cartIds, wishlistIds, toggleWishlist, addToCart } = useCartStore()
+    const isFavorite = wishlistIds.includes(product.id)
+    const isAdded = cartIds.includes(product.id)
 
     const handleFavoriteClick = (e: React.MouseEvent) => {
         e.preventDefault(); 
         e.stopPropagation();
-        setIsFavorite(!isFavorite);
+        toggleWishlist(product.id)
     };
     const handleCartClick = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsAdded(!isAdded);
+        addToCart(product.id)
     };
 
     return (

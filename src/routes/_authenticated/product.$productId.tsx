@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useCartStore } from '@/features/cart/store/use-cart-store'
 
 export const Route = createFileRoute('/_authenticated/product/$productId')({
   component: ProductPage,
@@ -27,8 +28,13 @@ const SHIPPING_COSTS: Record<string, string> = {
 
 function ProductPage() {
   const { productId } = Route.useParams()
-  const [isAdded, setIsAdded] = useState(false)
   const [shippingCountry, setShippingCountry] = useState("Germany")
+  const { cartIds, addToCart } = useCartStore()
+  const isAdded = cartIds.includes(Number(productId))
+
+  const handleAddToCart = () => {
+    addToCart(Number(productId))
+  }
 
   const { data: product, isLoading, isError } = useQuery({
     queryKey: ['product', productId],
@@ -124,7 +130,7 @@ function ProductPage() {
             </Button>
             
             <Button 
-              onClick={() => setIsAdded(true)}
+              onClick={handleAddToCart}
               disabled={isAdded}
               className={cn(
                 "flex-1 py-8 rounded-full text-xl font-bold transition-all",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Route } from '@/routes/_authenticated/index'
+import { useCartStore } from '@/features/cart/store/use-cart-store'
 import { useNavigate, Link, useSearch } from '@tanstack/react-router'
 import {
   DropdownMenu,
@@ -23,6 +23,8 @@ export function Header() {
   const [searchValue, setSearchValue] = useState(q || '')
   const userJson = localStorage.getItem('user')
   const user = userJson ? JSON.parse(userJson) : null
+  const cartCount = useCartStore((state) => state.cartIds.length)
+  const wishlistCount = useCartStore((state) => state.wishlistIds.length)
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -79,12 +81,12 @@ export function Header() {
           
           <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
             <Heart className="h-6 w-6" />
-            <span className="ml-1 text-sm font-bold">0</span>
+            <span className="ml-1 text-sm font-bold">{wishlistCount}</span>
           </Button>
 
           <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
             <ShoppingBag className="h-6 w-6" />
-            <span className="ml-1 text-sm font-bold">0</span>
+            <span className="ml-1 text-sm font-bold">{cartCount}</span>
           </Button>
 
           <DropdownMenu>
