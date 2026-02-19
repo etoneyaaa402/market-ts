@@ -1,6 +1,7 @@
 import { createFileRoute, redirect, Outlet } from '@tanstack/react-router'
 import { Header } from '@/components/header'
 import { ScrollToTop } from '@/components/scroll-to-top'
+import { ChatWidget } from '@/features/chat/components/chat-widget';
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: ({ location }) => {
@@ -22,6 +23,7 @@ export const Route = createFileRoute('/_authenticated')({
         <Outlet />
       </main>
       <ScrollToTop />
+      <ChatWidget />
     </div>
   ),
 })
