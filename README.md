@@ -1,73 +1,40 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2nd Hand Market
+SPA-приложение для маркетплейса, разработанное на базе React и TypeScript. В проекте реализован полный цикл взаимодействия пользователя с товарами: от авторизации до работы с каталогом и чатом поддержки.
+Ссылки
+1. Деплой: https://market-ts-wqqi.vercel.app/login?redirect=%2F
+2. Репозиторий: https://github.com/etoneyaaa402/market-ts
+Функциональность проекта
+- Авторизация пользователей: вход в систему с использованием JWT-токена и сохранение сессии в localStorage.
+- Защищенные маршруты: доступ к каталогу и страницам товаров разрешен только авторизованным пользователям.
+- Динамический каталог: подгрузка товаров из внешнего API с фильтрацией по категориям через параметры URL.
+- Система поиска: поиск товаров по названию и описанию с сохранением запроса в строке браузера.
+- Фильтрация и сортировка: возможность фильтровать товары по брендам и рейтингу, а также сортировать список по возрастанию или убыванию цены.
+- Детальная страница товара: отображение подробной информации о конкретном товаре, включая характеристики и расчет стоимости доставки.
+- Глобальное состояние: управление корзиной и списком избранного с синхронизацией счетчиков в шапке приложения.
+- WebSocket чат: модуль интерактивной поддержки, работающий по протоколу WSS (Echo-сервер).
+- Адаптивность: корректное отображение интерфейса на мобильных устройствах с использованием выдвижного бокового меню.
+Список зависимостей
+- react / react-dom
+- typescript
+- vite
+- @tanstack/react-router (маршрутизация)
+- @tanstack/react-query (работа с API и кэширование)
+- zustand (управление состоянием)
+- axios (HTTP-запросы)
+- tailwindcss (стилизация)
+- shadcn/ui (библиотека компонентов)
+- lucide-react (иконки)
+- clsx / tailwind-merge (утилиты для стилей)
+Инструкция по запуску
+Для запуска проекта на локальной машине выполните следующие шаги:
+1. Клонируйте репозиторий:
+git clone https://github.com/etoneyaaa402/market-ts
+2. Перейдите в папку проекта:
+cd market-ts
+3. Установите зависимости:
+npm install
+4. Запустите проект в режиме разработки:
+npm run dev
+5. Для сборки версии для деплоя используйте команду:
+npm run build
+Проект будет доступен в браузере по адресу: http://localhost:5173
